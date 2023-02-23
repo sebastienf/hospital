@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Projet 2-16</title>
+        <script src="https://unpkg.com/vue@next"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script><!-- CDN d'axios pour appel api (=client HTTP asé sur les Promesses) -->
+        <style>
+            img {
+                float: left;
+                margin-right: 1rem;
+            }
+
+            .personne {
+                clear: left;
+                padding: 1rem;
+            }
+
+            .personneDetails {
+                font-family: georgia;
+                font-size: 1.2rem;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div id="app">
+        	<div>
+				<label for="medicalIndex">Patient index</label>
+				<input type="text" id="medicalIndex" name="medicalIndex" v-model="patientIndex" required>
+				<button type="button" class="diagnoseButton" @click="getDiagnostic">Get diagnostic</button>
+			</div>
+			<div> {{res}}
+			</div>
+			
+			
+		<!-- <tous :personnes="users"></tous> -->
+        </div>
+        <script>
+            const Un = {
+                props:['personne'],
+                template:   `<tr class="personne">
+                                <td>
+                                    <img :src="personne.picture.large">
+                                </td>
+                                <td>
+                                    <div class="personneDetails">{{personne.name.first}}  {{personne.name.last}}</div>
+                                    <div class="personneDetails">{{personne.email}}</div>
+                                    <div class="personneDetails">{{personne.phone}}</div>
+                                </td>
+                            </tr>`
+            };
+
+            const Tous = {
+                props:['personnes'],
+                components: {
+                    // Composants locaux (objet javascript)
+                    // non disponibles dans les sous composants
+                    'un' : Un
+                },
+                template: `<table v-for="personne in personnes">
+                                <un v-bind:personne="personne"></un>
+                            </table>`
+                //<un v-for="personne in personnes" v-bind:personne="personne"/>`
+            };
+
+            const app = Vue.createApp({
+                data() {
+                    return {
+                        users: [],
+                        patientIndex: '',
+                        res: ''
+                    }
+                },
+                created() {
+                    // Appel de l'api avec axios de façon asynchrone en utilisant le principe des promesses
+                    axios.get('https://randomuser.me/api/?results=10').then(response => {
+                        this.users = response.data.results;
+                    });
+                },
+                components: {
+                    'tous' : Tous
+                },
+                methods: {
+                	getDiagnostic() {
+                		if (this.patientIndex == '') {
+                			alert('error');
+                			return;
+                		}
+                		
+                        // Appel de l'api avec axios de façon asynchrone en utilisant le principe des promesses
+                        //axios.get('http://localhost:8080/diagnose',{ params: patientIndex }).then(response => {
+                        axios.get('http://localhost:8080/diagnose?patientIndex='+ this.patientIndex).then(response => {
+                        	this.res = response.data;
+                        	alert(this.res);
+                        });
+                        
+                	}
+                	
+                }
+            });
+            let vm = app.mount('#app');
+        </script>
+    </body>
+</html>
