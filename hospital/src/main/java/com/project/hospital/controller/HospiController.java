@@ -26,12 +26,13 @@ import io.swagger.annotations.ApiResponse;
 public class HospiController {
 	
     @GetMapping("/")
+    @ApiOperation(value = "", hidden=true)
     public String index(Model model) {
         return "index";
     }
     
     
-    @RequestMapping("/diagnose")
+    @GetMapping("/diagnose")
     @ResponseBody
     @ApiOperation(value = "Returns patient diagnosis for a given patient index",
     response = DiagnosticResponse.class)
