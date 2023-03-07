@@ -13,3 +13,5 @@ How to run:
 API Swagger's Documentation:
 - http://localhost:8080/swagger-ui.html#/
 
+Tests
+- See class HospitalApplicationTests.java for tests
