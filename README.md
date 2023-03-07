@@ -6,8 +6,9 @@ Setup:
 - proceed to "mvn install"
 
 How to run:
-- execute main method from HospitalApplication.java
+- execute main HospitalApplication.java as Java application
 - go to http://localhost:8080/ to display Hospital manager web page
+- fill in patient index and click on the button to call the diagnosis API. The diagnosis will be displayed.
 
 API Swagger's Documentation:
 - http://localhost:8080/swagger-ui.html#/
